@@ -1,27 +1,10 @@
-var db = require('flat-db')
+const db = require('flat-db')
+const config = require('../config')
+config.dbConfig
 
-db.configure({
-  dir: './storage'
+module.exports = new db.Collection('todo', {
+  title: '',
+  text: '',
+  priority: '',
+  isDone: false
 })
-
-var toDos = [{
-  title: 'must do',
-  text: 'This is an important todo',
-  priority: 'high'
-}, {
-  title: 'must do',
-  text: 'This is an important todo',
-  priority: 'high'
-}, {
-  title: 'must do',
-  text: 'This is an important todo',
-  priority: 'high'
-}, {
-  title: 'must do',
-  text: 'This is an important todo',
-  priority: 'high'
-}, {
-  title: 'must do',
-  text: 'This is an important todo',
-  priority: 'high'
-}]
