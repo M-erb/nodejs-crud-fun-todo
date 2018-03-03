@@ -3,7 +3,7 @@ const app = express()
 
 app.use('/', express.static(__dirname + '/www'))
 
-require('./secure-api')(app)
+require('./secure-api/todo-api')(app)
 
 app.listen(3000);
 console.log('Server Started, listening on port 3000')

@@ -1,15 +1,15 @@
-const config = require('./config')
+const config = require('../config')
 config.dbConfig
 
-const ToDo = require('./models/todo')
+const ToDo = require('../models/todo')
 
 module.exports = (app) => {
-  app.get('/api/get-todos', (req, res) => {
+  app.get('/api/todo', (req, res) => {
     res.status(200).send({
       result: ToDo.all()
     })
   })
-  app.put('/api/update-todo', config.jsonParser, (req, res) => {
+  app.put('/api/todo', config.jsonParser, (req, res) => {
     if (req.body.id && req.body.data) {
       var key = ToDo.update(req.body.id, req.body.data)
       res.status(200).send({
@@ -21,7 +21,7 @@ module.exports = (app) => {
       })
     }
   })
-  app.post('/api/add-todo', config.jsonParser, (req, res) => {
+  app.post('/api/todo', config.jsonParser, (req, res) => {
     if (req.body) {
       var key = ToDo.add(req.body)
       res.status(200).send({
@@ -33,7 +33,7 @@ module.exports = (app) => {
       })
     }
   })
-  app.delete('/api/delete-todo', config.jsonParser, (req, res) => {
+  app.delete('/api/todo', config.jsonParser, (req, res) => {
     if (req.body.id) {
       var payload = ToDo.remove(req.body.id)
       res.status(200).send({
