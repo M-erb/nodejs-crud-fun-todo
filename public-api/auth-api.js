@@ -42,7 +42,6 @@ module.exports = (app) => {
   })
 
   app.post('/api/login', config.jsonParser, (req, res) => {
-    console.log('api/login', req.body)
     if (req.body) {
       // required fields
       if (!req.body.userName) return res.status(400).send({
@@ -54,33 +53,29 @@ module.exports = (app) => {
 
       let user = User.find().equals('userName', req.body.userName).run()
       if (user.length) {
-        console.log('getting User: RIGHT BEFORE COMPARE()', user[0].password, req.body.password)
-        bcrypt.compare(req.body.password, user[0].password, (err, isSuccess) => {
-          console.log('compare finished!', isSuccess, err)
+        return bcrypt.compare(req.body.password, user[0].password, (err, isSuccess) => {
           if (isSuccess) {
-            console.log('compare success!', isSuccess)
             res.status(200).send({
               result: 'Valid password'
             })
           } else {
-            console.log('compare error', err)
             res.status(400).send({
               result: 'User name and/or password is incorrect'
             })
           }
         })
       } else {
-        res.status(400).send({
+        return res.status(400).send({
           result: 'User name and/or password is incorrect'
         })
       }
     } else {
-      res.status(400).send({
+      return res.status(400).send({
         result: 'Required fields missing'
       })
     }
-    // res.status(500).send({
-    //   result: 'Unhandled exeption'
-    // })
+    return res.status(500).send({
+      result: 'Unhandled exeption'
+    })
   })
 }
