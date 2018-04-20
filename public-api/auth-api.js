@@ -52,30 +52,23 @@ module.exports = (app) => {
         result: 'Password is required'
       })
 
-      let users = User.all()
-      console.log('users', users, users.length)
-      if (users.length) {
-        console.log('in if statement, right before for loop');
-        for (let i; i < users.length; i++) {
-          console.log('in loop', users[i], i);
-          // if (users[i].userName === req.body.userName) {
-          //   bcrypt.compare(req.body.password, users[i].password, (bErr, bRes) => {
-          //     if (res) {
-          //       res.status(200).send({
-          //         result: "logged in!"
-          //       })
-          //     } else {
-          //       result: err
-          //     }
-          //   })
-          //   break
-          // } else if (i > users.length) {
-          //   res.status(400).send({
-          //     result: 'User name does not exist'
-          //   })
-          //   break
-          // }
-        }
+      let user = User.find().equals('userName', req.body.userName).run()
+      if (user.length) {
+        console.log('getting User: RIGHT BEFORE COMPARE()', user[0].password, req.body.password)
+        bcrypt.compare(req.body.password, user[0].password, (err, isSuccess) => {
+          console.log('compare finished!', isSuccess, err)
+          if (isSuccess) {
+            console.log('compare success!', isSuccess)
+            res.status(200).send({
+              result: 'Valid password'
+            })
+          } else {
+            console.log('compare error', err)
+            res.status(400).send({
+              result: 'User name and/or password is incorrect'
+            })
+          }
+        })
       } else {
         res.status(400).send({
           result: 'User name and/or password is incorrect'

@@ -6,3 +6,4 @@
 * [express](https://github.com/expressjs/express)
 * [body-parser](https://github.com/expressjs/body-parser)
 * [bcryptjs](https://github.com/dcodeIO/bcrypt.js)
+* [node-jws-simple](https://github.com/hokaccha/node-jwt-simple)

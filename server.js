@@ -5,6 +5,6 @@ app.use('/', express.static(__dirname + '/www'))
 
 require('./secure-api/todo-api')(app)
 require("./public-api/auth-api")(app)
-app.listen(3000);
+app.listen(3000)
 console.log('Server Started, listening on port 3000')
 console.log('visit: http://localhost:3000')
