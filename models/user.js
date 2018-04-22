@@ -7,5 +7,6 @@ module.exports = new db.Collection('user', {
   password: '',
   firstName: '',
   lastName: '',
-  emailAddress: ''
+  emailAddress: '',
+  jwt: ''
 })

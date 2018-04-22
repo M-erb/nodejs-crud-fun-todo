@@ -1,6 +1,7 @@
 const config = require('../config')
 config.dbConfig
 const bcrypt = require('bcryptjs')
+const jwt = require('../middleware/jwt.js')
 const User = require('../models/user')
 
 module.exports = (app) => {
@@ -51,22 +52,30 @@ module.exports = (app) => {
         result: 'Password is required'
       })
 
-      let user = User.find().equals('userName', req.body.userName).run()
-      if (user.length) {
-        return bcrypt.compare(req.body.password, user[0].password, (err, isSuccess) => {
+      let user = User.find().equals('userName', req.body.userName).run()[0]
+      console.log('testing user', user)
+      if (user) {
+        return bcrypt.compare(req.body.password, user.password, (err, isSuccess) => {
           if (isSuccess) {
+            console.log('test1', user)
+            let token = jwt.genToken(user)
+            User.update(user._id_, {
+              jwt: token
+            })
+            console.log('test2', user, token)
             res.status(200).send({
-              result: 'Valid password'
+              result: 'Valid password',
+              token: token
             })
           } else {
             res.status(400).send({
-              result: 'User name and/or password is incorrect'
+              result: 'Password is incorrect'
             })
           }
         })
       } else {
         return res.status(400).send({
-          result: 'User name and/or password is incorrect'
+          result: 'User name is incorrect'
         })
       }
     } else {
